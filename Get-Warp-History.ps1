@@ -22,6 +22,15 @@ if (-not (Test-Path $log_path))
 
 $log_content = Get-Content $log_path
 
+# Find game path by searching for "Loading player data from" in the log
+# This contains the path to the game's data folder.
+$game_path = Find-GamePath -LogPath $log_path
+
+# Check if game path is empty
+if ([string]::IsNullOrEmpty($game_path)) 
+{
+    Write-ErrorAndExit "Game Path"
+}
 
 # This function Writes the default error message to the console and exits the script.
 # with the missing input parameter.
@@ -35,4 +44,27 @@ function Write-ErrorAndExit {
     Write-Error "- If you have already done this, try restarting the game and running the script again."
     Write-Error "- If you are still having issues, please write an issue on the github page."
     exit 1
+}
+
+# This fucntion finds the game path by searching for "Loading player data from" in the log.
+function Find-GamePath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$LogPath
+    )
+
+    $log_content = Get-Content $LogPath
+    $game_path = ""
+
+    for ($i = 0; $i -lt $log_content.Length 0; $i++) {
+        $line = $log_content[$i]
+
+        if ($line -and $line.startsWith("Loading player data from")) {
+            $game_path = $line.replace("Loading player data from ", "")
+            $game_path = $game_path.replace("/data.unity3d", "")
+            break
+        }
+    }
+
+    return $game_path
 }
