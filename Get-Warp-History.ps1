@@ -43,6 +43,7 @@ function Write-ErrorAndExit {
     Write-Error "Please make sure you have opened the game at least once and opened the warp history."
     Write-Error "- If you have already done this, try restarting the game and running the script again."
     Write-Error "- If you are still having issues, please write an issue on the github page."
+    Write-Output "GitHub: https://github.com/erik-lance/Star-Rail-Wish-Counter"
     exit 1
 }
 
