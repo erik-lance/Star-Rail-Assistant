@@ -57,12 +57,12 @@ Write-Output "Finding Game Path..."
 
 $app_data = [Environment]::GetFolderPath("ApplicationData")
 
-$log_path = "$appData\..\LocalLow\Cognosphere\Star Rail\Player.log"
+$log_path = "$app_data\..\LocalLow\Cognosphere\Star Rail\Player.log"
 
 # Check if log exists
 if (-not (Test-Path $log_path)) 
 {
-    Write-ErrorAndExit "Log File (Player.log)"
+    Write-ErrorAndExit "Log File (Player.log): $log_path"
 }
 
 $log_content = Get-Content $log_path
@@ -75,4 +75,56 @@ $game_path = Find-GamePath -LogPath $log_path
 if ([string]::IsNullOrEmpty($game_path)) 
 {
     Write-ErrorAndExit "Game Path"
+}
+
+# ----- Find URL of wish history -----
+Write-Output "Finding Wish History..."
+
+# Copy data_2 file to a new file so we can read it
+# data_2 is the file that contains the wish history url
+Copy-Item -Path "$game_path/webCaches/Cache/Cache_Data/data_2" -Destination "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
+
+# Read the data_2 file in UTF8 format and remove the copied file
+$cache_data = Get-Content -Encoding UTF8 -Raw "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
+Remove-Item -Path "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
+
+# Split the data_2 file by 1/0/ to get each line
+$cache_lines = $cache_data -split '1/0/'
+$foundURL = "False"
+
+# Loop through each line and find the line that contains the wish history url
+for ($i = 0; $i -lt $cache_lines.Length; $i++) 
+{
+    $line = $cache_lines[$i]
+
+    # If the line starts with http and contains getGachaLog
+    if ($line.StartsWith('http') -and $line.Contains("getGachaLog")) 
+    {
+        Write-Host "Found Wish History URL!" -ForegroundColor Green
+        # Write-Output "URL: $line `n`n" # Uncomment this line to get FULL url
+
+        # Split the line by \0 to get the url
+        $url = ($line -split "\0")[0]
+
+        # Make a request to the url and check if the retcode is 0
+        $response = Invoke-WebRequest -Uri $url -Method GET -UseBasicParsing -ContentType "application/json" | ConvertFrom-Json
+
+        if ($response.retcode -eq 0) 
+        {
+            Write-Output $url
+            Set-Clipboard -Value $url
+            Write-Host "`nWarp History Url has been saved to clipboard. `n" -ForegroundColor Yellow
+            $foundURL = "True"
+
+            # Exit the script pressing any key
+            Write-Host "Press any key to continue..."
+            $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp") > $null
+            exit
+        }
+    }
+}
+
+if ($foundURL -eq "False") 
+{
+    Write-ErrorAndExit "Wish History URL"
 }
