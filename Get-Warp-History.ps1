@@ -7,6 +7,51 @@
 Add-Type -AssemblyName System.Web
 $ProgressPreference = 'SilentlyContinue'
 
+# This function Writes the default error message to the console and exits the script.
+# with the missing input parameter.
+function Write-ErrorAndExit {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$MissingItem
+    )
+    Write-Host "Unable to find: $MissingItem" -ForegroundColor Red
+    Write-Output "Please make sure you have opened the game at least once and opened the warp history."
+    Write-Output "- If you have already done this, try restarting the game and running the script again."
+    Write-Output "- If you are still having issues, please write an issue on the github page."
+    Write-Output "GitHub: https://github.com/erik-lance/Star-Rail-Wish-Counter"
+    Write-Output ""
+    
+    # Exit the script pressing any key
+    Write-Host "Press any key to continue..."
+    $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp") > $null
+    exit
+}
+
+# This fucntion finds the game path by searching for "Loading player data from" in the log.
+function Find-GamePath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$LogPath
+    )
+
+    $log_content = Get-Content $LogPath
+    $game_path = ""
+
+    for ($i = 0; $i -lt $log_content.Length; $i++) {
+        $line = $log_content[$i]
+
+        if ($line -and $line.startsWith("Loading player data from")) {
+            $game_path = $line.replace("Loading player data from ", "")
+            $game_path = $game_path.replace("/data.unity3d", "")
+            break
+        }
+    }
+
+    return $game_path
+}
+
+
+
 # Find Path of Honkai Star Rail
 Write-Output "Finding Game Path..."
 
@@ -30,42 +75,4 @@ $game_path = Find-GamePath -LogPath $log_path
 if ([string]::IsNullOrEmpty($game_path)) 
 {
     Write-ErrorAndExit "Game Path"
-}
-
-# This function Writes the default error message to the console and exits the script.
-# with the missing input parameter.
-function Write-ErrorAndExit {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$MissingItem
-    )
-    Write-Error "Unable to find: $MissingItem"
-    Write-Error "Please make sure you have opened the game at least once and opened the warp history."
-    Write-Error "- If you have already done this, try restarting the game and running the script again."
-    Write-Error "- If you are still having issues, please write an issue on the github page."
-    Write-Output "GitHub: https://github.com/erik-lance/Star-Rail-Wish-Counter"
-    exit 1
-}
-
-# This fucntion finds the game path by searching for "Loading player data from" in the log.
-function Find-GamePath {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$LogPath
-    )
-
-    $log_content = Get-Content $LogPath
-    $game_path = ""
-
-    for ($i = 0; $i -lt $log_content.Length 0; $i++) {
-        $line = $log_content[$i]
-
-        if ($line -and $line.startsWith("Loading player data from")) {
-            $game_path = $line.replace("Loading player data from ", "")
-            $game_path = $game_path.replace("/data.unity3d", "")
-            break
-        }
-    }
-
-    return $game_path
 }
