@@ -25,3 +25,13 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Textbox */
+input[type="text"],
+input[type="password"] {
+  background-color: rgba(var(--foreground-rgb), 0.1);
+  border: 1px solid rgba(var(--foreground-rgb), 0.2);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  color: rgb(var(--foreground-rgb));
+}
