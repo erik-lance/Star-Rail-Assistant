@@ -121,6 +121,10 @@ for ($i = 0; $i -lt $cache_lines.Length; $i++)
             $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp") > $null
             exit
         }
+        else
+        {
+            Write-ErrorAndExit "Wish History URL + $url"
+        }
     }
 }
 
