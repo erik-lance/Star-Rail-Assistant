@@ -14,14 +14,16 @@ const queryDetails = {
     "authkey": "",
     "game_biz": "hkrpg_global",
     "size": 20,
+    "gacha_type": 0,
     "end_id": 0
 }
 
 const gachaURL = "https://api-os-takumi.mihoyo.com/common/gacha_record/api/getGachaLog?";
 
 export default async function importGacha(link: string) { 
-    const authkey = link.split("authkey=")[1].split("&")[0];
-    const region = link.split("region=")[1].split("&")[0];
+    const authkey:string = link.split("authkey=")[1].split("&")[0].replaceAll("%2F","/").replaceAll("%2B", "+").replaceAll("%3D", "=");
+    const region:string = link.split("region=")[1].split("&")[0];
+    const gacha_type:string = link.split("gacha_type=")[1].split("&")[0];
     
     let last_id:number = 0;
     let still_has_pages:boolean = true;
@@ -33,19 +35,30 @@ export default async function importGacha(link: string) {
     // Fill in queryDetails
     queryDetails.authkey = authkey;
     queryDetails.region = region;
+    queryDetails.gacha_type = parseInt(gacha_type);
 
     console.log(queryDetails);
     console.log(stringify(queryDetails));
 
     while (still_has_pages) {
         // Fetch data from the game's API
-        const response = await fetch(gachaURL + stringify(queryDetails));
+        const response = await fetch(gachaURL + stringify(queryDetails), 
+        {
+            mode: 'no-cors',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        ).then(
+            (response) => {
+                console.log(response);
+                response.json();
+            }
+        )
 
         // Parse and print data
-        const data = await response.json();
-        console.log(data);
-
-
+        still_has_pages = false;
     }
 
     
