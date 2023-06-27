@@ -93,7 +93,7 @@ $cache_lines = $cache_data -split '1/0/'
 $foundURL = "False"
 
 # Loop through each line and find the line that contains the wish history url
-for ($i = 0; $i -lt $cache_lines.Length; $i++) 
+for ($i = $cache_lines.Length; $i -ge 0; $i--) 
 {
     $line = $cache_lines[$i]
 
