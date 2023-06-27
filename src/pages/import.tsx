@@ -1,4 +1,6 @@
 import CodeBlock from '@/components/CodeBlock'
+import importGacha from '@/api/import-gacha'
+
 
 export default function Import() {
     return <>
@@ -32,10 +34,18 @@ export default function Import() {
             <p>Input your link here</p>
             <input type="text" placeholder="https://api-os-takumi.mihoyo.com/common/gacha_record/api/getGachaLog?" className='
                         border-2 border-gray-300 rounded-lg p-2 m-2 w-96
-                        '/>
+                        '
+                        id='import-link'
+                        />
             <button className='
                         border-2 border-gray-300 rounded-lg p-2 m-2
-                        '>Import</button>
+                        '
+                        onClick={() => {
+                            // Import gacha with the link
+                            const link = (document.getElementById('import-link') as HTMLInputElement).value
+                            importGacha(link)
+                        }}
+                        >Import</button>
         </div>
 
     </>

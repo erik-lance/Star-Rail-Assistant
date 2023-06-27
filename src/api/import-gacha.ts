@@ -30,7 +30,20 @@ export default async function importGacha(link: string) {
     // by replacing last_id with the last id of the last item in the previous page
     // until the last page is reached
 
+    // Fill in queryDetails
+    queryDetails.authkey = authkey;
+    queryDetails.region = region;
+
+    console.log(queryDetails);
+    console.log(stringify(queryDetails));
+
     while (still_has_pages) {
+        // Fetch data from the game's API
+        const response = await fetch(gachaURL + stringify(queryDetails));
+
+        // Parse and print data
+        const data = await response.json();
+        console.log(data);
 
 
     }
