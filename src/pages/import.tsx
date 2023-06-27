@@ -35,6 +35,9 @@ export default function Import() {
             <input type="text" placeholder="https://api-os-takumi.mihoyo.com/common/gacha_record/api/getGachaLog?" className='
                         border-2 border-gray-300 rounded-lg p-2 m-2 w-96
                         '/>
+            <button className='
+                        border-2 border-gray-300 rounded-lg p-2 m-2
+                        '>Import</button>
         </div>
 
     </>
