@@ -44,7 +44,6 @@ export default async function importGacha(link: string) {
         // Fetch data from the game's API
         const response = await fetch(gachaURL + stringify(queryDetails), 
         {
-            mode: 'no-cors',
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
