@@ -14,6 +14,13 @@ const queryDetails = {
     end_id: 0,
 };
 
+export interface GachaItem {
+    time: string,
+    name: string,
+    item_type: string,
+    rank: string,
+}
+
 export default async function importGacha(link: string) {
     console.log("Starting gacha import script")
     console.log(link);
@@ -23,20 +30,20 @@ export default async function importGacha(link: string) {
 
     let still_has_pages = true;
 
-    let gacha_data: any[] = [];
+    let gacha_data: GachaItem[] = [];
 
     function gacha_object(
         time: string,
         name: string,
         item_type: string,
-        rank_type: string,
+        rank: string,
         id: string
     ) {
         return {
             time: time,
             name: name,
             item_type: item_type,
-            rank_type: rank_type,
+            rank: rank,
             id: id
         }
     }
@@ -79,7 +86,7 @@ export default async function importGacha(link: string) {
                         gacha.time,
                         gacha.name,
                         gacha.item_type,
-                        gacha.rank_type,
+                        gacha.rank,
                         gacha.id
                     );
 
@@ -103,5 +110,4 @@ export default async function importGacha(link: string) {
     }
 
     console.log("Gacha import completed successfully");
-    console.log(gacha_data);
 }
