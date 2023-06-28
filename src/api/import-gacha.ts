@@ -110,4 +110,8 @@ export default async function importGacha(link: string) {
     }
 
     console.log("Gacha import completed successfully");
+
+    // Store the gacha_data to the local storage
+    const gacha_data_string:string = JSON.stringify(gacha_data);
+    localStorage.setItem("star_rail_assistant_gacha_data", gacha_data_string);
 }
