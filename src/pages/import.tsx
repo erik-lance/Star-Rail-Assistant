@@ -7,7 +7,7 @@ export default function Import() {
     const handleImport = async () => {
         try {
             console.log("Handling Import")
-            const response = await fetch("/api/import", {
+            const response = await fetch("/api/import-gacha-endpoint", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
