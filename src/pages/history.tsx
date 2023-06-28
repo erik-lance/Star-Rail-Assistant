@@ -5,16 +5,16 @@
 
 // Import material ui table
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
-
-const test_rows = [
-    { time: '2021-10-01 12:00:00', name: 'Diluc', item_type: 'Character', rank: 'S' },
-    { time: '2021-10-01 12:00:00', name: 'Diluc', item_type: 'Character', rank: 'A' },
-    { time: '2021-10-01 12:00:00', name: 'Diluc', item_type: 'Character', rank: 'B' },
-    { time: '2021-10-01 12:00:00', name: 'Diluc', item_type: 'Character', rank: 'C' },
-]
+import { GachaItem } from '@/api/import-gacha';
 
 export default function History() {
+    // Retrieve the gacha data from local storage
+    const stored_gacha_data = localStorage.getItem('star_rail_assistant_gacha_data');
+
+    // Parse the JSON string into an object
+    const gacha_data = stored_gacha_data ? JSON.parse(stored_gacha_data) : [];
+
+
     return <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -26,21 +26,24 @@ export default function History() {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {
-                    test_rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.time}
-                            </TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.item_type}</TableCell>
-                            <TableCell align="right">{row.rank}</TableCell>
-                        </TableRow>
-                    ))
-                }
+                {/* If there is no data, display a message */}
+                {gacha_data != null && <TableRow>
+                    <TableCell colSpan={4} align="center">No data to display</TableCell>
+                </TableRow>}
+                {/* If there is data, display it */}
+                {gacha_data != null && gacha_data.map((row:GachaItem) => (
+                    <TableRow
+                        key={row.time}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {row.time}
+                        </TableCell>
+                        <TableCell align="right">{row.name}</TableCell>
+                        <TableCell align="right">{row.item_type}</TableCell>
+                        <TableCell align="right">{row.rank}</TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
         </Table>
     </TableContainer>
