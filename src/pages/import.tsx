@@ -6,7 +6,7 @@ export default function Import() {
 
     const handleImport = async () => {
         try {
-            console.log("Handling Import")
+            console.log("Handling Import");
             const response = await fetch("/api/import-gacha-endpoint", {
                 method: "POST",
                 headers: {
@@ -18,7 +18,23 @@ export default function Import() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
+
                 // Handle the successful response from the API
+                if (data.success) {
+                    console.log("Successfuly retrieved gacha data from API")
+                    const gachaData = data.gachaData;
+                    localStorage.setItem(
+                        "star_rail_assistant_gacha_data",
+                        JSON.stringify(gachaData)
+                    );
+
+                    // Perform any other actions with the gachaData as needed
+
+                    console.log("Gacha data imported successfully and stored to local");
+                } else {
+                    console.error("Error importing gacha data:", data.error);
+                    // Handle the error response from the API
+                }
             } else {
                 console.error("Error importing gacha data");
                 // Handle the error response from the API
