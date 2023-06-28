@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { link } = req.body;
             const gachaData: GachaItem[] = await importGacha(link);
 
-            res.status(200).json({ success: true, result: gachaData });
+            res.status(200).json({ success: true, gachaData });
         } catch (error) {
             console.error("Error importing gacha data", error);
             res.status(500).json({ success: false, error: "Error importing gacha data" });
