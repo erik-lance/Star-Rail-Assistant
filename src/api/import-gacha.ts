@@ -86,7 +86,7 @@ export default async function importGacha(link: string) {
                         gacha.time,
                         gacha.name,
                         gacha.item_type,
-                        gacha.rank,
+                        gacha.rank_type,
                         gacha.id
                     );
 
