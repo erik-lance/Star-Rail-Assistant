@@ -9,7 +9,15 @@ import { GachaItem } from '@/api/import-gacha';
 
 export default function History() {
     // Retrieve the gacha data from local storage
-    const stored_gacha_data = localStorage.getItem('star_rail_assistant_gacha_data');
+    let stored_gacha_data;
+
+    console.log("Retrieving gacha data from local storage")
+    if (typeof window !== "undefined") {
+        stored_gacha_data = localStorage.getItem('star_rail_assistant_gacha_data');
+    } else {
+        console.log("Window is undefined, cannot retrieve gacha data from local storage")
+        stored_gacha_data = null;
+    }
 
     // Parse the JSON string into an object
     const gacha_data = stored_gacha_data ? JSON.parse(stored_gacha_data) : [];
