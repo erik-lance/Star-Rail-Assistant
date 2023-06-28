@@ -23,13 +23,31 @@ export default async function importGacha(link: string) {
 
     let still_has_pages = true;
 
-    while (still_has_pages) {
-        queryDetails.authkey = authkey;
-        queryDetails.region = region;
-        queryDetails.gacha_type = parseInt(gacha_type);
+    let gacha_data: any[] = [];
 
+    function gacha_object(
+        time: string,
+        name: string,
+        item_type: string,
+        rank_type: string,
+        id: string
+    ) {
+        return {
+            time: time,
+            name: name,
+            item_type: item_type,
+            rank_type: rank_type,
+            id: id
+        }
+    }
+
+
+    queryDetails.authkey = authkey;
+    queryDetails.region = region;
+    queryDetails.gacha_type = parseInt(gacha_type);
+
+    while (still_has_pages) {
         console.log("Fetching data from the game's API");
-        console.log(gachaURL + stringify(queryDetails));
         const response = await fetch(gachaURL + stringify(queryDetails), {
             method: "GET",
             headers: {
@@ -38,17 +56,52 @@ export default async function importGacha(link: string) {
         });
 
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
+            const api_data = await response.json();
 
-            // const last_id = data.data.list[data.data.list.length - 1].id;
-            // still_has_pages = data.data.list.length === queryDetails.size;
-            still_has_pages = false;
+            if (api_data.data == null) {
+                if (api_data.message == "visit too frequently") {
+                    // Delay the next request by 1 second and loop again
+                    console.log("Too many requests, delaying next request by 1 second");
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    continue;
+                }
+            }
+
+            const data_list: any[] = api_data.data.list;
+
+            // Checks if the data_list is empty, if it is, then there are no more pages to fetch
+            if (data_list.length === 0) {
+                still_has_pages = false;
+            }
+            else {
+                data_list.forEach((gacha: any) => {
+                    let gacha_item = gacha_object(
+                        gacha.time,
+                        gacha.name,
+                        gacha.item_type,
+                        gacha.rank_type,
+                        gacha.id
+                    );
+
+                    gacha_data.push(gacha_item);
+                });
+
+                // Get the last id of the last item in the list
+                const last_id = data_list[data_list.length - 1].id;
+
+                // Update the queryDetails object with the last_id
+                queryDetails.end_id = last_id;
+
+
+                console.log("Proceeding to next page");
+            }
         } else {
             console.error("Error fetching data from the game's API");
             throw new Error("Error fetching data from the game's API");
         }
+
     }
 
     console.log("Gacha import completed successfully");
+    console.log(gacha_data);
 }
