@@ -7,6 +7,7 @@
 import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { GachaItem } from '@/api/import-gacha';
 import { useEffect, useState } from 'react';
+import ranks from '@/styles/ranks.module.css'
 
 export default function History() {
     // Retrieve the gacha data from local storage
@@ -55,13 +56,19 @@ export default function History() {
                     </TableRow>
                 ) : (
                     gachaData.map((row:GachaItem) => (
-                        <TableRow key={row.time} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                            <TableCell component="th" scope="row">
+                        <TableRow 
+                            key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                            
+                        >
+                            <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
+                                {row.id}
+                            </TableCell>
+                            <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
                                 {row.time}
                             </TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.item_type}</TableCell>
-                            <TableCell align="right">{row.rank}</TableCell>
+                            <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.name}</TableCell>
+                            <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.item_type}</TableCell>
+                            <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.rank}</TableCell>
                         </TableRow>
                     ))
                 )}
