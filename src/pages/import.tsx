@@ -61,11 +61,9 @@ export default function Import() {
                     <li>Copy and paste the command below</li>
                     <CodeBlock
                         text={`
-                            $scriptUrl = 'https://raw.githubusercontent.com/erik-lance/Star-Rail-Assistant/master/powershell_scripts/Get-Warp-History.ps1'
-                            $scriptPath = Join-Path -Path $env:TEMP -ChildPath 'Get-Warp-History.ps1'
-                            Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath
-                            powershell -NoExit -File $scriptPath
-                            Remove-Item -Path $scriptPath -Force
+                        $scriptUrl = 'https://raw.githubusercontent.com/erik-lance/Star-Rail-Assistant/master/powershell_scripts/Get-Warp-History.ps1'
+                        $scriptContent = Invoke-WebRequest -Uri $scriptUrl | Select-Object -ExpandProperty Content
+                        Invoke-Expression -Command $scriptContent
                     `}
                     />
                     <li>This grabs your temporary authkey. Now paste that into the textbox of this page below.</li>
