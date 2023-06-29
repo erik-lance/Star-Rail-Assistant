@@ -1,10 +1,14 @@
 import CodeBlock from "@/components/CodeBlock";
 import { useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 export default function Import() {
     const [link, setLink] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleImport = async () => {
+        setIsLoading(true);
+        
         try {
             console.log("Handling Import");
             const response = await fetch("/api/import-gacha-endpoint", {
@@ -42,6 +46,8 @@ export default function Import() {
         } catch (error) {
             console.error("Error importing gacha data", error);
             // Handle the fetch error
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -78,10 +84,13 @@ export default function Import() {
                     onChange={(e) => setLink(e.target.value)}
                 />
                 <button
-                    className="border-2 border-gray-300 rounded-lg p-2 m-2"
+                    className="border-2 border-gray-300 rounded-lg p-2 m-2 w-20 h-15
+                        hover:bg-gray-300 hover:text-gray-800
+                    "
                     onClick={handleImport}
+                    disabled={isLoading}
                 >
-                    Import
+                    {isLoading ? <CircularProgress size={15} /> : "Import"}
                 </button>
             </div>
         </>
