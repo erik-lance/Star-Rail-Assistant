@@ -35,6 +35,7 @@ export default function History() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
+                    <TableCell>Id</TableCell>
                     <TableCell>Time</TableCell>
                     <TableCell align="right">Name</TableCell>
                     <TableCell align="right">Item Type</TableCell>
