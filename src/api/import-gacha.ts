@@ -15,6 +15,7 @@ const queryDetails = {
 };
 
 export interface GachaItem {
+    id: string,
     time: string,
     name: string,
     item_type: string,
