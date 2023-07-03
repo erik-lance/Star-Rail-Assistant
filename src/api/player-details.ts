@@ -33,6 +33,45 @@ export default async function importPlayer(uuid: string) {
         achievement_count: 0
     }
 
+    const displayed_characters_data = [];
+
+    function character_data(
+        name: string,
+        rarity: number,    // Rank (4* / 5*)
+        rank: number,      // Eidolon
+        level: number,
+        promotion: number, // Ascension
+        path: Path,
+        element: Element,
+
+    ) {
+
+    }
+
+    // Enum of acceptable paths
+    enum Path {
+        "The Destruction",
+        "The Hunt",
+        "The Erudition",
+        "The Harmony",
+        "The Nihility",
+        "The Preservation",
+        "The Abundance"
+    }
+
+    // Enum of acceptable elements
+    enum Element {
+        "Physical",
+        "Fire",
+        "Ice",
+        "Lightning",
+        "Wind",
+        "Quantum",
+        "Imaginary"
+    }
+
+
+
     console.log("Player import completed successfully");
 
     // Store the data
