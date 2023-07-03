@@ -45,7 +45,15 @@ export default async function importPlayer(uuid: string) {
         element: Element,
 
     ) {
-
+        return {
+            name: name,
+            rarity: rarity,
+            rank: rank,
+            level: level,
+            promotion: promotion,
+            path: path,
+            element: element
+        }
     }
 
     // Enum of acceptable paths
@@ -70,6 +78,23 @@ export default async function importPlayer(uuid: string) {
         "Imaginary"
     }
 
+    if (response.ok) {
+        const api_data = await response.json();
+
+        if (api_data.data == null) {
+            console.log("Player not found");
+            return null;
+        }
+
+        // Grab Player's data
+
+
+
+
+    } else {
+        console.error("Error fetching data from the game's API (player)");
+        throw new Error("Error fetching data from the game's API (player)");
+    }
 
 
     console.log("Player import completed successfully");
