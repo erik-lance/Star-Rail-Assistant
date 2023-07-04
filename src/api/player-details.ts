@@ -19,13 +19,12 @@ export default async function importPlayer(uuid: string) {
 
     // Note: the last 3 keys are found inside space_info
     const player_data = {
+        uid: uuid,
         nickname: "",
         level: 0,
         world_level: 0,
         friend_count: 0,
-        avatar: {
-            name: "",
-        },
+        avatar_name: "",
         signature: "",
 
         light_cone_count: 0,
@@ -87,6 +86,27 @@ export default async function importPlayer(uuid: string) {
         }
 
         // Grab Player's data
+        const player_json = api_data.player;
+
+        if (player_json == null) {
+            console.log("Player not found");
+            return null;
+        }
+
+        // Fill player_data
+        player_data.nickname = player_json.nickname;
+        player_data.level = player_json.level;
+        player_data.world_level = player_json.world_level;
+        player_data.friend_count = player_json.friend_count;
+        player_data.avatar_name = player_json.avatar.name;
+        player_data.signature = player_json.signature;
+
+        // Grab space_info data
+        player_data.light_cone_count = api_data.space_info.light_cone_count;
+        player_data.avatar_count = api_data.space_info.avatar_count;
+        player_data.achievement_count = api_data.space_info.achievement_count;
+
+        // Grab displayed_characters data
 
 
 
