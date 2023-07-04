@@ -9,9 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const gachaData: GachaItem[] = await importGacha(link);
 
             res.status(200).json({ success: true, gachaData });
-        } catch (error) {
-            console.error("Error importing gacha data", error);
-            res.status(500).json({ success: false, error: "Error importing gacha data" });
+        } catch (error: any) {
+            console.log("[import-gacha-endpoint] Error importing gacha data"+ error);
+            res.status(500).json({ success: false, error: error.message, detailedError: error });
         }
     } else {
         res.status(405).json({ success: false, error: "Method Not Allowed" });
