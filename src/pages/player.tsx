@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
+import Avatar from "@/components/Avatar"
+import { PlayerDetails } from "@/api/player-details";
 
 export default function Player() {
     const [uuid, setUuid] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [loadedPlayer, setLoadedPlayer] = useState(false);
-    const [playerData, setPlayerData] = useState({} as any);
+    const [playerData, setPlayerData] = useState({} as PlayerDetails);
 
     const handleImport = async () => {
         setIsLoading(true);
@@ -33,7 +35,9 @@ export default function Player() {
                         JSON.stringify(playerDataAPI)
                     );
 
-                    setPlayerData(playerDataAPI);
+                    const parsed_player_data = JSON.parse(localStorage.getItem("star_rail_assistant_player_data") || "{}");
+
+                    setPlayerData(parsed_player_data);
                     setLoadedPlayer(true);
 
                     // Perform any other actions with the playerData as needed
@@ -86,6 +90,9 @@ export default function Player() {
                 <p>Light Cones: {playerData.light_cone_count}</p>
                 <p>Avatars: {playerData.avatar_count}</p>
                 <p>Achievements: {playerData.achievement_count}</p>
+
+                {/* Display Avatar */}
+                <Avatar name={playerData.avatar_name} />
             </div>
         </>}
     </>
