@@ -13,7 +13,7 @@ export interface PlayerData {
 }
 
 export interface PlayerDetails {
-    uid: string,
+    uuid: string,
     nickname: string,
     level: number,
     world_level: number,
