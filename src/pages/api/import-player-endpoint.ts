@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-// import importGacha, { GachaItem } from "@/api/import-gacha";
 import importPlayer from "@/api/player-details";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
