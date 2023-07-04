@@ -7,6 +7,24 @@ function player_api_link(uuid: string): string {
     return `https://api.mihomo.me/sr_info_parsed/${uuid}?lang=en`;
 }
 
+export interface PlayerData {
+    player: PlayerDetails,
+    characters: [], // TODO: Add interface for characters
+}
+
+export interface PlayerDetails {
+    uid: string,
+    nickname: string,
+    level: number,
+    world_level: number,
+    friend_count: number,
+    avatar_name: string,
+    signature: string,
+    light_cone_count: number,
+    avatar_count: number,
+    achievement_count: number
+}
+
 export default async function importPlayer(uuid: string) {
     console.log("Starting player import script")
     const player_url = player_api_link(uuid);
@@ -19,7 +37,7 @@ export default async function importPlayer(uuid: string) {
 
     // Note: the last 3 keys are found inside space_info
     const player_data = {
-        uid: uuid,
+        uuid: uuid,
         nickname: "",
         level: 0,
         world_level: 0,
@@ -80,18 +98,13 @@ export default async function importPlayer(uuid: string) {
     if (response.ok) {
         const api_data = await response.json();
 
-        if (api_data.data == null) {
+        if (api_data.player == null) {
             console.log("Player not found");
             return null;
         }
 
         // Grab Player's data
         const player_json = api_data.player;
-
-        if (player_json == null) {
-            console.log("Player not found");
-            return null;
-        }
 
         // Fill player_data
         player_data.nickname = player_json.nickname;
@@ -102,9 +115,9 @@ export default async function importPlayer(uuid: string) {
         player_data.signature = player_json.signature;
 
         // Grab space_info data
-        player_data.light_cone_count = api_data.space_info.light_cone_count;
-        player_data.avatar_count = api_data.space_info.avatar_count;
-        player_data.achievement_count = api_data.space_info.achievement_count;
+        player_data.light_cone_count = player_json.space_info.light_cone_count;
+        player_data.avatar_count = player_json.space_info.avatar_count;
+        player_data.achievement_count = player_json.space_info.achievement_count;
 
         // Grab displayed_characters data
 
@@ -120,4 +133,5 @@ export default async function importPlayer(uuid: string) {
     console.log("Player import completed successfully");
 
     // Store the data
+    return player_data;
 }
