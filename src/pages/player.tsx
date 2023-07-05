@@ -8,6 +8,7 @@ export default function Player() {
     const [isLoading, setIsLoading] = useState(false);
     const [loadedPlayer, setLoadedPlayer] = useState(false);
     const [playerData, setPlayerData] = useState({} as PlayerDetails);
+    const [characterData, setCharacterData] = useState({} as any);
 
     const handleImport = async () => {
         setIsLoading(true);
@@ -29,7 +30,7 @@ export default function Player() {
                 // Handle the successful response from the API
                 if (data.success) {
                     console.log("Successfuly retrieved player data from API")
-                    const playerDataAPI = data.playerData;
+                    const playerDataAPI = data.playerData.player;
                     localStorage.setItem(
                         "star_rail_assistant_player_data",
                         JSON.stringify(playerDataAPI)

@@ -31,7 +31,7 @@ enum Element {
 
 export interface PlayerData {
     player: PlayerDetails,
-    characters: [], // TODO: Add interface for characters
+    characters: DisplayedCharacters
 }
 
 export interface PlayerDetails {
@@ -47,6 +47,20 @@ export interface PlayerDetails {
     achievement_count: number
 }
 
+export interface DisplayedCharacters {
+    characters: Character[],
+}
+
+export interface Character {
+    name: string,
+    rarity: number,    // Rank (4* / 5*)
+    rank: number,      // Eidolon
+    level: number,
+    promotion: number, // Ascension
+    path: Path,
+    element: Element,
+}
+
 export default async function importPlayer(uuid: string) {
     console.log("Starting player import script")
     const player_url = player_api_link(uuid);
@@ -58,7 +72,7 @@ export default async function importPlayer(uuid: string) {
     });
 
     // Note: the last 3 keys are found inside space_info
-    const player_data = {
+    const player_details: PlayerDetails = {
         uuid: uuid,
         nickname: "",
         level: 0,
@@ -71,8 +85,15 @@ export default async function importPlayer(uuid: string) {
         avatar_count: 0,
         achievement_count: 0
     }
+    
+    const displayed_characters: DisplayedCharacters = {
+        characters: []
+    }
 
-    const displayed_characters_data = [];
+    const player_data: PlayerData = {
+        player: player_details,
+        characters: displayed_characters
+    }
 
     function character_data(
         name: string,
@@ -108,18 +129,18 @@ export default async function importPlayer(uuid: string) {
         // Grab Player's data
         const player_json = api_data.player;
 
-        // Fill player_data
-        player_data.nickname = player_json.nickname;
-        player_data.level = player_json.level;
-        player_data.world_level = player_json.world_level;
-        player_data.friend_count = player_json.friend_count;
-        player_data.avatar_name = player_json.avatar.name;
-        player_data.signature = player_json.signature;
+        // Fill player_details
+        player_details.nickname = player_json.nickname;
+        player_details.level = player_json.level;
+        player_details.world_level = player_json.world_level;
+        player_details.friend_count = player_json.friend_count;
+        player_details.avatar_name = player_json.avatar.name;
+        player_details.signature = player_json.signature;
 
         // Grab space_info data
-        player_data.light_cone_count = player_json.space_info.light_cone_count;
-        player_data.avatar_count = player_json.space_info.avatar_count;
-        player_data.achievement_count = player_json.space_info.achievement_count;
+        player_details.light_cone_count = player_json.space_info.light_cone_count;
+        player_details.avatar_count = player_json.space_info.avatar_count;
+        player_details.achievement_count = player_json.space_info.achievement_count;
 
         // Grab displayed_characters data
 
