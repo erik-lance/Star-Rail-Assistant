@@ -143,9 +143,26 @@ export default async function importPlayer(uuid: string) {
         player_details.achievement_count = player_json.space_info.achievement_count;
 
         // Grab displayed_characters data
+        const displayed_characters_json = api_data.characters;
 
+        // Fill displayed_characters
+        for (let i = 0; i < displayed_characters_json.length; i++) {
+            const character_json = displayed_characters_json[i];
 
+            const character = character_data(
+                character_json.name,
+                character_json.rarity,
+                character_json.rank,
+                character_json.level,
+                character_json.promotion,
+                character_json.path.name,
+                character_json.element.name
+            );
 
+            displayed_characters.characters.push(character);
+        }
+
+        
 
     } else {
         console.error("Error fetching data from the game's API (player)");
