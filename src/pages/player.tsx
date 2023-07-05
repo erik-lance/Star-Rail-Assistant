@@ -80,19 +80,26 @@ export default function Player() {
         {playerData.uuid && <>
             <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
                 <h1 className="text-2xl font-bold">Player Details</h1>
-                <p>UUID: {playerData.uuid}</p>
-                <p>Nick: {playerData.nickname}</p>
-                <p>Level: {playerData.level}</p>
+                <div
+                    className='p-2 m-1 flex h-20 gap-5'
+                >
+                    <Avatar name={playerData.avatar_name} />
+                    <div>
+                        <p>UUID: {playerData.uuid}</p>
+                        <p>Nick: {playerData.nickname}</p>
+                        <p>Level: {playerData.level}</p>
+                    </div>
+                    
+                </div>
                 <p>World Level: {playerData.world_level}</p>
                 <p>Friends: {playerData.friend_count}</p>
-                <p>Avatar: {playerData.avatar_name}</p>
                 <p>Signature: {playerData.signature}</p>
                 <p>Light Cones: {playerData.light_cone_count}</p>
                 <p>Avatars: {playerData.avatar_count}</p>
                 <p>Achievements: {playerData.achievement_count}</p>
 
                 {/* Display Avatar */}
-                <Avatar name={playerData.avatar_name} />
+
             </div>
         </>}
     </>
