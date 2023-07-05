@@ -7,7 +7,7 @@ function avatar_link(_name: string) {
     return `https://static.wikia.nocookie.net/houkai-star-rail/images/a/a3/Character_${parsed_name}_Icon.png`;
 }
 
-const Avatar = (name: string) => {
+const Avatar = ({name}: {name:string}) => {
     return (
         <div
             className='p-2 m-1 rounded-lg bg-black flex flex-col'
