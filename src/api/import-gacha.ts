@@ -72,6 +72,9 @@ export default async function importGacha(link: string) {
                     console.log("Too many requests, delaying next request by 1 second");
                     await new Promise((resolve) => setTimeout(resolve, 1000));
                     continue;
+                } else if (api_data.message == "authkey timeout") {
+                    console.error("Authkey used is expired.");
+                    throw new Error("Authkey used is expired.");
                 }
             }
 
