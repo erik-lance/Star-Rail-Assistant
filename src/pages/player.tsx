@@ -89,11 +89,17 @@ export default function Player() {
                         <p>Nick: {playerData.nickname}</p>
                         <p>Level: {playerData.level}</p>
                     </div>
-                    
                 </div>
+
+                {/* Display signature in a box */}
+                <div
+                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-gray-700 rounded-lg h-20'
+                >
+                    <p>Signature: {playerData.signature}</p>
+                </div>
+
                 <p>World Level: {playerData.world_level}</p>
                 <p>Friends: {playerData.friend_count}</p>
-                <p>Signature: {playerData.signature}</p>
                 <p>Light Cones: {playerData.light_cone_count}</p>
                 <p>Avatars: {playerData.avatar_count}</p>
                 <p>Achievements: {playerData.achievement_count}</p>
