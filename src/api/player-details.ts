@@ -7,6 +7,28 @@ function player_api_link(uuid: string): string {
     return `https://api.mihomo.me/sr_info_parsed/${uuid}?lang=en`;
 }
 
+// Enum of acceptable paths
+enum Path {
+    "The Destruction",
+    "The Hunt",
+    "The Erudition",
+    "The Harmony",
+    "The Nihility",
+    "The Preservation",
+    "The Abundance"
+}
+
+// Enum of acceptable elements
+enum Element {
+    "Physical",
+    "Fire",
+    "Ice",
+    "Lightning",
+    "Wind",
+    "Quantum",
+    "Imaginary"
+}
+
 export interface PlayerData {
     player: PlayerDetails,
     characters: [], // TODO: Add interface for characters
@@ -73,27 +95,7 @@ export default async function importPlayer(uuid: string) {
         }
     }
 
-    // Enum of acceptable paths
-    enum Path {
-        "The Destruction",
-        "The Hunt",
-        "The Erudition",
-        "The Harmony",
-        "The Nihility",
-        "The Preservation",
-        "The Abundance"
-    }
-
-    // Enum of acceptable elements
-    enum Element {
-        "Physical",
-        "Fire",
-        "Ice",
-        "Lightning",
-        "Wind",
-        "Quantum",
-        "Imaginary"
-    }
+    
 
     if (response.ok) {
         const api_data = await response.json();
