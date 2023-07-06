@@ -6,6 +6,7 @@
 // Import material ui table
 import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { GachaItem } from '@/utils/gacha-details';
+import { StandardCharacters, StandardLightCones } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
 import ranks from '@/styles/ranks.module.css'
 
@@ -63,6 +64,39 @@ export default function History() {
         return hard_pity - rolls_since_last_five_star;
     }
 
+    function get_is_guaranteed_five_star(){
+        // Find the last 5* item
+        const nullGacha = {
+            id: "",
+            time: "",
+            name: "",
+            item_type: "",
+            rank: "",
+        }        
+
+        let last_five_star:GachaItem = nullGacha;
+
+        for (let i = gachaData.length - 1; i >= 0; i--) {
+            if (gachaData[i].rank === "5") {
+                last_five_star = gachaData[i];
+                break;
+            }
+        }
+
+        if (last_five_star === nullGacha){
+            return "No";
+        } else {
+            // Check if last 5* item was from StandardCharacters or StandardLightCones
+            const values_characters = Object.values(StandardCharacters);
+            const values_light_cones = Object.values(StandardLightCones);
+            if (values_characters.includes(last_five_star.name) || values_light_cones.includes(last_five_star.name)){
+                return "Yes";
+            } else {
+                return "No";
+            }
+        }
+    }
+
 
     return (<>
         <div
@@ -90,7 +124,7 @@ export default function History() {
                             <div>
                                 <div>Rolls until soft pity: {get_rolls_until_soft_pity()}</div>
                                 <div>Rolls until hard pity: {get_rolls_until_hard_pity()}</div>
-                                <div>Guaranteed 5*?: </div>
+                                <div>Guaranteed Promo 5*?: {get_is_guaranteed_five_star()}</div>
                             </div>
                         </>
                     )}
