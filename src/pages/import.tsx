@@ -57,6 +57,8 @@ export default function Import() {
                 <h1 className="text-2xl font-bold">How to import your gacha link?</h1>
                 <p>Follow these steps!</p>
                 <ol className="list-decimal list-inside">
+                    <li>Open Honkai Star Rail and open the warp screen</li>
+                    <li>Click view details and once the data loads, close the screen</li>
                     <li>Open Windows PowerShell</li>
                     <li>Copy and paste the command below</li>
                     <CodeBlock

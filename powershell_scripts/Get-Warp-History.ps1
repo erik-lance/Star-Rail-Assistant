@@ -16,6 +16,7 @@ function Write-ErrorAndExit {
     )
     Write-Host "Unable to find: $MissingItem" -ForegroundColor Red
     Write-Output "Please make sure you have opened the game at least once and opened the warp history."
+    Write-Output "- Please also close the wish history before running the script."
     Write-Output "- If you have already done this, try restarting the game and running the script again."
     Write-Output "- If you are still having issues, please write an issue on the github page."
     Write-Output "GitHub: https://github.com/erik-lance/Star-Rail-Wish-Counter"

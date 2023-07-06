@@ -1,4 +1,5 @@
 import { stringify } from "querystring";
+import { GachaItem } from "@/utils/gacha-details";
 
 const gachaURL = "https://api-os-takumi.mihoyo.com/common/gacha_record/api/getGachaLog?";
 const queryDetails = {
@@ -13,14 +14,6 @@ const queryDetails = {
     gacha_type: 0,
     end_id: 0,
 };
-
-export interface GachaItem {
-    id: string,
-    time: string,
-    name: string,
-    item_type: string,
-    rank: string,
-}
 
 export default async function importGacha(link: string) {
     console.log("Starting gacha import script")

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import Avatar from "@/components/Avatar"
-import { PlayerDetails } from "@/api/player-details";
+import { PlayerDetails } from "@/utils/character-data";
 import { AiFillTrophy } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import player from "@/styles/player.module.css"

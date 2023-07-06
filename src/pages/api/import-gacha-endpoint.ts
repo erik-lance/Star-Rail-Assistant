@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import importGacha, { GachaItem } from "@/api/import-gacha";
+import importGacha from "@/api/import-gacha";
+import { GachaItem } from "@/utils/gacha-details";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log("Starting gacha import");
