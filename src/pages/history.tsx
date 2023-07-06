@@ -72,7 +72,7 @@ export default function History() {
             <div
                 className="flex flex-col items-center justify-center py-2 gap-5"
             >
-                <h1>Wish Stats</h1>
+                <h1>Warp Stats</h1>
                 <div
                     className="flex flex-row items-center justify-center py-2 gap-5"
                 >
