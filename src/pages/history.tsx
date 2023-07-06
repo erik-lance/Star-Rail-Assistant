@@ -118,13 +118,13 @@ export default function History() {
                         <>
                             <div>
                                 <div>Number of Warps: {gachaData.length}</div>
-                                <div>Rolls since last 4*: {get_rolls_since_last_x(4)}</div>
-                                <div>Rolls since last 5*: {get_rolls_since_last_x(5)}</div>
+                                <div>Rolls since last <span className={ranks[`rank-4`]}>4*</span>: {get_rolls_since_last_x(4)}</div>
+                                <div>Rolls since last <span className={ranks[`rank-5`]}>5*</span>: {get_rolls_since_last_x(5)}</div>
                             </div>
                             <div>
                                 <div>Rolls until soft pity: {get_rolls_until_soft_pity()}</div>
                                 <div>Rolls until hard pity: {get_rolls_until_hard_pity()}</div>
-                                <div>Guaranteed Promo 5*?: {get_is_guaranteed_five_star()}</div>
+                                <div>Guaranteed Promo <span className={ranks[`rank-5`]}>5*</span>?: {get_is_guaranteed_five_star()}</div>
                             </div>
                         </>
                     )}
