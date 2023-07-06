@@ -2,12 +2,16 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import Avatar from "@/components/Avatar"
 import { PlayerDetails } from "@/api/player-details";
+import { AiFillTrophy } from "react-icons/ai";
+import { BsFillPersonFill } from "react-icons/bs";
+import player from "@/styles/player.module.css"
 
 export default function Player() {
     const [uuid, setUuid] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [loadedPlayer, setLoadedPlayer] = useState(false);
     const [playerData, setPlayerData] = useState({} as PlayerDetails);
+    const [characterData, setCharacterData] = useState({} as any);
 
     const handleImport = async () => {
         setIsLoading(true);
@@ -29,7 +33,7 @@ export default function Player() {
                 // Handle the successful response from the API
                 if (data.success) {
                     console.log("Successfuly retrieved player data from API")
-                    const playerDataAPI = data.playerData;
+                    const playerDataAPI = data.playerData.player;
                     localStorage.setItem(
                         "star_rail_assistant_player_data",
                         JSON.stringify(playerDataAPI)
@@ -80,19 +84,40 @@ export default function Player() {
         {playerData.uuid && <>
             <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
                 <h1 className="text-2xl font-bold">Player Details</h1>
-                <p>UUID: {playerData.uuid}</p>
-                <p>Nick: {playerData.nickname}</p>
-                <p>Level: {playerData.level}</p>
-                <p>World Level: {playerData.world_level}</p>
-                <p>Friends: {playerData.friend_count}</p>
-                <p>Avatar: {playerData.avatar_name}</p>
-                <p>Signature: {playerData.signature}</p>
-                <p>Light Cones: {playerData.light_cone_count}</p>
-                <p>Avatars: {playerData.avatar_count}</p>
-                <p>Achievements: {playerData.achievement_count}</p>
+                <div
+                    className='p-2 m-1 flex h-20 gap-5'
+                >
+                    <Avatar name={playerData.avatar_name} />
+                    <div>
+                        <p>UUID: {playerData.uuid}</p>
+                        <p>Nick: {playerData.nickname}</p>
+                        <p>Level: {playerData.level}</p>
+                    </div>
+                    <div
+                        className={player[`player_details`]}
+                    >
+                        <p><BsFillPersonFill /> {playerData.friend_count}</p>
+                        <p><AiFillTrophy /> {playerData.achievement_count}</p>
+                    </div>
+                </div>
+
+                {/* Display signature in a box */}
+                <div
+                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-gray-700 rounded-lg h-20'
+                >
+                    <p>Signature: {playerData.signature}</p>
+                </div>
+
+                <div
+                    className={player[`player_details`]}
+                >
+                    <p>World Level: {playerData.world_level}</p>
+                    <p>Light Cones: {playerData.light_cone_count}</p>
+                    <p>Avatars: {playerData.avatar_count}</p>
+                </div>
 
                 {/* Display Avatar */}
-                <Avatar name={playerData.avatar_name} />
+
             </div>
         </>}
     </>

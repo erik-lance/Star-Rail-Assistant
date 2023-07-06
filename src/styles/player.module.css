@@ -1,0 +1,13 @@
+.player_details {
+    display: flex;
+    flex-direction: column;
+    gap: 5;
+}
+
+.player_details p {
+    text-align: center;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
