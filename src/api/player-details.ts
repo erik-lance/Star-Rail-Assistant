@@ -165,8 +165,8 @@ export default async function importPlayer(uuid: string) {
         
 
     } else {
-        console.error("Error fetching data from the game's API (player)");
-        throw new Error("Error fetching data from the game's API (player)");
+        console.error("Error fetching data from the game's API (player-details)");
+        throw new Error("Error fetching data from the game's API (player-details) "+ response.statusText + " (" + response.status + ")");
     }
 
 
