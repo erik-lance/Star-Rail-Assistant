@@ -5,7 +5,7 @@
 
 // Import material ui table
 import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { GachaItem } from '@/api/import-gacha';
+import { GachaItem } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
 import ranks from '@/styles/ranks.module.css'
 

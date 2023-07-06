@@ -19,3 +19,11 @@ export enum StandardLightCones {
     "In the Name of the World",
     "Moment of Victory"
 }
+
+export interface GachaItem {
+    id: string,
+    time: string,
+    name: string,
+    item_type: string,
+    rank: string,
+}
