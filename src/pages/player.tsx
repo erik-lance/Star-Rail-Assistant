@@ -2,6 +2,9 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import Avatar from "@/components/Avatar"
 import { PlayerDetails } from "@/api/player-details";
+import { AiFillTrophy } from "react-icons/ai";
+import { BsFillPersonFill } from "react-icons/bs";
+import player from "@/styles/player.module.css"
 
 export default function Player() {
     const [uuid, setUuid] = useState("");
@@ -90,6 +93,12 @@ export default function Player() {
                         <p>Nick: {playerData.nickname}</p>
                         <p>Level: {playerData.level}</p>
                     </div>
+                    <div
+                        className={player[`player_details`]}
+                    >
+                        <p><BsFillPersonFill /> {playerData.friend_count}</p>
+                        <p><AiFillTrophy /> {playerData.achievement_count}</p>
+                    </div>
                 </div>
 
                 {/* Display signature in a box */}
@@ -99,11 +108,13 @@ export default function Player() {
                     <p>Signature: {playerData.signature}</p>
                 </div>
 
-                <p>World Level: {playerData.world_level}</p>
-                <p>Friends: {playerData.friend_count}</p>
-                <p>Light Cones: {playerData.light_cone_count}</p>
-                <p>Avatars: {playerData.avatar_count}</p>
-                <p>Achievements: {playerData.achievement_count}</p>
+                <div
+                    className={player[`player_details`]}
+                >
+                    <p>World Level: {playerData.world_level}</p>
+                    <p>Light Cones: {playerData.light_cone_count}</p>
+                    <p>Avatars: {playerData.avatar_count}</p>
+                </div>
 
                 {/* Display Avatar */}
 
