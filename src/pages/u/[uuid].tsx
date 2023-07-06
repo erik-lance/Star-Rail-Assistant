@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import Avatar from "@/components/Avatar"
-import { PlayerDetails } from "@/api/player-details";
+import { Character, DisplayedCharacters, PlayerDetails } from "@/api/player-details";
 import { AiFillTrophy } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import player from "@/styles/player.module.css"
@@ -15,7 +15,7 @@ export default function UserPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [loadedPlayer, setLoadedPlayer] = useState(false);
     const [playerData, setPlayerData] = useState({} as PlayerDetails);
-    const [characterData, setCharacterData] = useState({} as any);
+    const [characterData, setCharacterData] = useState({} as DisplayedCharacters);
 
     const handleImport = async () => {
         try {
@@ -111,9 +111,40 @@ export default function UserPage() {
                     <p>Avatars: {playerData.avatar_count}</p>
                 </div>
 
-                {/* Display Avatar */}
-
             </div>
         </>}
+
+        {/* This is doesn't reveal until character details exist */}
+        {characterData && characterData.characters && (
+            <div className="flex flex-col rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
+                <h1 className="text-2xl font-bold">Displayed Characters</h1>
+                <div className="flex flex-col items-center">
+                    {characterData.characters.map((character: Character) => (
+                        <div key={character.name} className="p-2 m-1 flex gap-5">
+                            <div
+                                className="flex flex-row gap-5"
+                            >
+                                <Avatar 
+                                    name={character.name}
+                                />
+                                <div>
+                                    <p>{character.name}</p>
+                                    <p>Level: {character.level}</p>
+                                    <p>Eidolons: {character.rank}</p>
+                                    <p>Rarity: {character.rarity}</p>
+                                </div>
+                                <div>
+                                    <p>Promotion: {character.promotion}</p>
+                                    <p>Path: {character.path}</p>
+                                    <p>Element: {character.element}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+
+
     </>
 }
