@@ -12,12 +12,18 @@ function avatar_link(_name: string) {
     // TODO: Add support for non character icons.
 }
 
-const Sticker = ({ name }: { name: string }) => {
+interface StickerProps {
+    name: string;
+    size?: number;
+}
+
+const Sticker = ({name, size=250}: StickerProps) => {
     return (
         <img
             src={avatar_link(name)}
             alt={name}
             className='h-full'
+            style={{width: size, height: size}}
         />
     );
 }
