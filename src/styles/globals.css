@@ -6,6 +6,14 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  /* Color variables */
+  --white: #FFFFFF;
+  --black: #242027;
+  --beige: #E6DECA;
+  --red: #92244F;
+  --dark-red: #3D253B;
+  --pink: #F1DEE5;
 }
 
 @media (prefers-color-scheme: dark) {
