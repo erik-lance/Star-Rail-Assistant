@@ -9,6 +9,7 @@ import { GachaItem } from '@/utils/gacha-details';
 import { StandardCharacters, StandardLightCones } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
 import ranks from '@/styles/ranks.module.css'
+import Sticker from '@/components/Sticker';
 
 export default function History() {
     // Retrieve the gacha data from local storage
@@ -155,7 +156,12 @@ export default function History() {
                         ) : gachaData.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={5} align="center">
+                                    <div
+                                        className="flex flex-col items-center justify-center py-2 gap-5"
+                                    >
+                                    <Sticker name="pom_sad" size={250}/>
                                     No data to display (try importing your gacha data first)
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ) : (
