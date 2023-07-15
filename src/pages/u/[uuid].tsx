@@ -20,7 +20,7 @@ export default function UserPage() {
 
     const handleImport = async () => {
         try {
-            console.log("Loading a player page");
+            console.log("Loading a player page with UUID: "+uuid);
             const response = await fetch("/api/import-player-endpoint", {
                 method: "POST",
                 headers: {
@@ -67,11 +67,11 @@ export default function UserPage() {
 
     // Begin importing player data on page load
     useEffect(() => {
-        if (!isLoading && !loadedPlayer) {
+        if (!isLoading && !loadedPlayer && uuid) {
             setIsLoading(true);
             handleImport();
         }
-    }, []); // empty dependency array to run it only once
+    }, [router]); // use router to reimport player data when the router changes
 
 
     return <>
