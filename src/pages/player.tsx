@@ -66,7 +66,7 @@ export default function Player() {
 
 
     return <>
-        <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
+        <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-brown mb-10 w-1/2">
             <h1 className="text-2xl font-bold">Import your UUID</h1>
             <input className="rounded-lg p-2 m-2 border-2 border-gray-300 bg-gray-700 text-gray-100" type="text" placeholder="UUID" value={uuid} onChange={(e) => setUuid(e.target.value)} />
             <button
@@ -82,7 +82,7 @@ export default function Player() {
 
         {/* This is doesn't reveal until player details exist */}
         {playerData.uuid && <>
-            <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
+            <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-brown mb-10 w-1/2">
                 <h1 className="text-2xl font-bold">Player Details</h1>
                 <div
                     className='p-2 m-1 flex h-20 gap-5'
@@ -103,7 +103,7 @@ export default function Player() {
 
                 {/* Display signature in a box */}
                 <div
-                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-gray-700 rounded-lg h-20'
+                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-dark-red rounded-lg h-20'
                 >
                     <p>Signature: {playerData.signature}</p>
                 </div>

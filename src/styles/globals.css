@@ -3,16 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: var(--black);
+  --background-start-rgb: var(--white);
+  --background-end-rgb: var(--white);
+
+  /* Color variables */
+  --white: 255, 255, 255;
+  --black: 36, 32, 39;
+  --beige: 230, 222, 202;
+  --red: 146, 36, 79;
+  --dark-red: 61, 37, 59;
+  --pink: 241, 222, 229;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: var(--white);
+    --background-start-rgb: var(--black);
+    --background-end-rgb: var(--black);
   }
 }
 

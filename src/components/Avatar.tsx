@@ -4,7 +4,12 @@ function avatar_link(_name: string) {
     // Converts spaces to underscores
     console.log("Converting avatar_link " + _name)
     let parsed_name: string = _name.replaceAll(' ', '_');
-    return `https://static.wikia.nocookie.net/houkai-star-rail/images/a/a3/Character_${parsed_name}_Icon.png`;
+
+    // Get link to character icon in public/avatar_icons folder
+    const link: string = "/avatar_icons/" + parsed_name + ".png";
+
+
+    return link;
     // TODO: Add support for non character icons.
 }
 
