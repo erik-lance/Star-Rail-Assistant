@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import importPlayer from "@/api/player-details";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("Starting player import");
+    console.log("[API] Starting player import");
     if (req.method === "POST") {
         try {
             const { uuid } = req.body;
