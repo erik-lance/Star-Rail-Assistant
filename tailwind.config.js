@@ -15,9 +15,13 @@ module.exports = {
       colors: {
         'white': '#ffffff',
         'black': '#242027',
+        'brown': '#4C353E',
         'beige': '#E6DECA',
         'red': '#92244F',
+        'light-red': '#3D253B',
         'dark-red': '#3D253B',
+        'deep-red': '#25131A',
+        'blue': '#5D59BB',
         'pink': '#F1DEE5',
       },
     },
