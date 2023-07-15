@@ -77,7 +77,7 @@ export default function UserPage() {
 
         {/* This is doesn't reveal until player details exist */}
         {playerData.uuid && <>
-            <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
+            <div className="rounded-lg p-4 m-2 border-2 border-gray-300 bg-brown mb-10 w-1/2">
                 <h1 className="text-2xl font-bold">Player Details</h1>
                 <div
                     className='p-2 m-1 flex h-20 gap-5'
@@ -98,7 +98,7 @@ export default function UserPage() {
 
                 {/* Display signature in a box */}
                 <div
-                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-gray-700 rounded-lg h-20'
+                    className='p-2 mt-2 mb-4 border-2 border-gray-300 bg-dark-red rounded-lg h-20'
                 >
                     <p>Signature: {playerData.signature}</p>
                 </div>
@@ -116,7 +116,7 @@ export default function UserPage() {
 
         {/* This is doesn't reveal until character details exist */}
         {characterData && characterData.characters && (
-            <div className="flex flex-col rounded-lg p-4 m-2 border-2 border-gray-300 bg-gray-800 mb-10 w-1/2">
+            <div className="flex flex-col rounded-lg p-4 m-2 border-2 border-gray-300 bg-brown mb-10 w-1/2">
                 <h1 className="text-2xl font-bold">Displayed Characters</h1>
                 <div className="flex flex-col items-center">
                     {characterData.characters.map((character: Character) => (
