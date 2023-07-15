@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import importPlayer from "@/api/player-details";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("Starting player import");
+    console.log("[API] Starting player import");
     if (req.method === "POST") {
         try {
             const { uuid } = req.body;
@@ -11,6 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json({ success: true, playerData });
         } catch (error: any) {
             console.log("[import-player-endpoint] Error importing player data"+ error);
+            console.log("UUID: " + req.body.uuid);
+            
             res.status(500).json({ success: false, error: error.message, detailedError: error });
         }
     } else {

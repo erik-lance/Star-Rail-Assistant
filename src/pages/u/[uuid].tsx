@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import Avatar from "@/components/Avatar"
+import Sticker from '@/components/Sticker';
 import { Character, DisplayedCharacters, PlayerDetails } from "@/utils/character-data";
 import { AiFillTrophy } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -19,7 +20,7 @@ export default function UserPage() {
 
     const handleImport = async () => {
         try {
-            console.log("Loading a player page");
+            console.log("Loading a player page with UUID: "+uuid);
             const response = await fetch("/api/import-player-endpoint", {
                 method: "POST",
                 headers: {
@@ -52,28 +53,52 @@ export default function UserPage() {
                 console.log(playerData)
                 console.log(characterData)
             } else {
-                console.error("Error importing player data");
+                console.error("Error importing player data (returned from API) without error code");
                 // Handle the error response from the API
             }
         } catch (error) {
-            console.error("Error importing player data", error);
+            console.error("Error importing player data (returned from API)", error);
             // Handle the fetch error
         } finally {
+            console.log("Finished loading player page");
             setIsLoading(false);
         }
     }
 
     // Begin importing player data on page load
-    if (!isLoading && !loadedPlayer) {
-        setIsLoading(true);
-        handleImport();
-    }
+    useEffect(() => {
+        if (!isLoading && !loadedPlayer && uuid) {
+            setIsLoading(true);
+            handleImport();
+        }
+    }, [router]); // use router to reimport player data when the router changes
+
 
     return <>
         {/* This shows a loading icon while loading details */}
-        {isLoading && <div className="flex justify-center items-center h-screen">
-            <CircularProgress />
-        </div>}
+        {isLoading && <div className="flex items-center">
+            <div 
+                className="text-2xl font-bold w-72 h-full flex flex-col justify-center items-center gap-5"
+            >
+                Loading player data
+                
+                <Sticker name="kafka_bam"/>
+                <CircularProgress />
+            </div>
+        </div>
+        }
+
+        {/* This shows an error page if user doesn't exist */}
+        {!isLoading && !loadedPlayer && <>
+            <div 
+                className="text-2xl font-bold w-72 h-full flex flex-col justify-center items-center gap-5"
+            >
+                <Sticker name="sampo_dumpster"/>
+                <h1 className="text-2xl font-bold">Player not found</h1>
+                
+            </div>
+            <p className="text-lg">Please check the UUID and try again</p>
+        </>}
 
         {/* This is doesn't reveal until player details exist */}
         {playerData.uuid && <>
@@ -124,7 +149,7 @@ export default function UserPage() {
                             <div
                                 className="flex flex-row gap-5"
                             >
-                                <Avatar 
+                                <Avatar
                                     name={character.name}
                                 />
                                 <div>
