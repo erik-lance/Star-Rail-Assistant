@@ -43,3 +43,16 @@ input[type="password"] {
   padding: 0.5rem;
   color: rgb(var(--foreground-rgb));
 }
+
+.rank-3 {
+  color: #000000;
+}
+
+.rank-4 {
+  color: #8b329f;
+}
+
+.rank-5 {
+  color: #ffbf00;
+}
+

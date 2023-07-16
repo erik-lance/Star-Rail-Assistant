@@ -4,17 +4,43 @@
 // { time, name, item_type, rank }
 
 // Import material ui table
-import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { CircularProgress, LinearProgress } from '@mui/material';
+import { DataGrid, GridColDef, GridCellParams } from '@mui/x-data-grid';
 import { GachaItem } from '@/utils/gacha-details';
-import { StandardCharacters, StandardLightCones } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
-import ranks from '@/styles/ranks.module.css'
+import Avatar from '@/components/Avatar'
+
+import { get_rolls_since_last_x, get_rolls_until_soft_pity, get_rolls_until_hard_pity, get_is_guaranteed_five_star } from '@/utils/rolls-calculator';
+
+import NoRowsOverlay from '@/components/NoRowsOverlay';
+import Sticker from '@/components/Sticker';
 
 export default function History() {
     // Retrieve the gacha data from local storage
 
     const [isLoading, setIsLoading] = useState(true);
     const [gachaData, setGachaData] = useState([] as GachaItem[]);
+    const [rows, setRows] = useState<any[]>([]);
+
+    const columns: GridColDef[] = [
+        { field: 'time', headerName: 'Time', width: 200 },
+        {
+            field: 'name', headerName: 'Name', width: 300,
+            renderCell(params) {
+                const item = params.row as GachaItem;
+                if (item.item_type === "Character") {
+                    return <>
+                        <Avatar name={item.name} />
+                        <span className="ml-2">{item.name}</span>
+                    </>
+                }
+                return params.value;
+            },
+
+        },
+        { field: 'item_type', headerName: 'Item Type', width: 100 },
+        { field: 'rank', headerName: 'Rank', width: 10, align: 'center' },
+    ]
 
     useEffect(() => {
         // Simulate data fetching delay
@@ -24,78 +50,25 @@ export default function History() {
             // Replace this with your actual data retrieval logic
             const storedGachaData = localStorage.getItem("star_rail_assistant_gacha_data");
             const parsedGachaData = storedGachaData ? JSON.parse(storedGachaData) : [];
+
             setGachaData(parsedGachaData);
+
+            // Update rows
+            const updatedRows = parsedGachaData.map((item: GachaItem, index: number) => ({
+                id: index,
+                time: item.time,
+                name: item.name,
+                item_type: item.item_type,
+                rank: item.rank,
+            }));
+            setRows(updatedRows);
+
             setIsLoading(false);
         };
 
         fetchGachaData();
     }, []);
 
-    function get_rolls_since_last_x(star: number): number{
-        // Returns the number of rolls since the last 4* item
-        let rolls_since_last_x: number = 0;
-        for (let i = 0; i < gachaData.length; i++) {
-            if (gachaData[i].rank === star.toString()) {
-                return rolls_since_last_x;
-            } else {
-                rolls_since_last_x++;
-            }
-        }
-        return rolls_since_last_x;
-    }
-
-    function get_rolls_until_soft_pity(){
-        // Returns the number of rolls until soft pity
-        const rolls_since_last_five_star:number = get_rolls_since_last_x(5);
-        const soft_pity:number = 75;
-
-        if (rolls_since_last_five_star >= soft_pity){
-            return 0;
-        } else {
-            return soft_pity - rolls_since_last_five_star;
-        }
-    }
-
-    function get_rolls_until_hard_pity(){
-        // Returns the number of rolls until hard pity
-        const rolls_since_last_five_star:number = get_rolls_since_last_x(5);
-        const hard_pity:number = 90;
-
-        return hard_pity - rolls_since_last_five_star;
-    }
-
-    function get_is_guaranteed_five_star(){
-        // Find the last 5* item
-        const nullGacha = {
-            id: "",
-            time: "",
-            name: "",
-            item_type: "",
-            rank: "",
-        }        
-
-        let last_five_star:GachaItem = nullGacha;
-
-        for (let i = gachaData.length - 1; i >= 0; i--) {
-            if (gachaData[i].rank === "5") {
-                last_five_star = gachaData[i];
-                break;
-            }
-        }
-
-        if (last_five_star === nullGacha){
-            return "No";
-        } else {
-            // Check if last 5* item was from StandardCharacters or StandardLightCones
-            const values_characters = Object.values(StandardCharacters);
-            const values_light_cones = Object.values(StandardLightCones);
-            if (values_characters.includes(last_five_star.name) || values_light_cones.includes(last_five_star.name)){
-                return "Yes";
-            } else {
-                return "No";
-            }
-        }
-    }
 
 
     return (<>
@@ -106,79 +79,61 @@ export default function History() {
             <div
                 className="flex flex-col items-center justify-center py-2 gap-5"
             >
-                <h1>Warp Stats</h1>
+                {isLoading ? (
                 <div
-                    className="flex flex-row items-center justify-center py-2 gap-5"
+                    className="flex flex-col items-center justify-center py-2 gap-5"
                 >
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : gachaData.length === 0 ? (
-                        <p>No data</p>
-                    ) : (
-                        <>
+                    <Sticker name="stelle_watermelon" size={200} />
+                    <CircularProgress />
+
+                </div>) : gachaData.length === 0 ? (
+                    <p>No data</p>
+                ) : (
+                    <>
+                        <h1 className="text-3xl font-bold">Warp Stats</h1>
+                        <div
+                            className="flex flex-row items-center justify-center py-2 gap-5"
+                        >
                             <div>
                                 <div>Number of Warps: {gachaData.length}</div>
-                                <div>Rolls since last <span className={ranks[`rank-4`]}>4*</span>: {get_rolls_since_last_x(4)}</div>
-                                <div>Rolls since last <span className={ranks[`rank-5`]}>5*</span>: {get_rolls_since_last_x(5)}</div>
+                                <div>Rolls since last <span className={`rank-4`}>4*</span>: {get_rolls_since_last_x(4, gachaData)}</div>
+                                <div>Rolls since last <span className={`rank-5`}>5*</span>: {get_rolls_since_last_x(5, gachaData)}</div>
                             </div>
                             <div>
-                                <div>Rolls until soft pity: {get_rolls_until_soft_pity()}</div>
-                                <div>Rolls until hard pity: {get_rolls_until_hard_pity()}</div>
-                                <div>Guaranteed Promo <span className={ranks[`rank-5`]}>5*</span>?: {get_is_guaranteed_five_star()}</div>
+                                <div>Rolls until soft pity: {get_rolls_until_soft_pity(gachaData)}</div>
+                                <div>Rolls until hard pity: {get_rolls_until_hard_pity(gachaData)}</div>
+                                <div>Guaranteed Promo <span className={`rank-5`}>5*</span>?: {get_is_guaranteed_five_star(gachaData)}</div>
                             </div>
-                        </>
-                    )}
-                </div>
+                        </div>
+                    </>
+                )}
+
             </div>
         </div >
 
         {/* This contains the table of the wish history */}
-        <div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Time</TableCell>
-                            <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Item Type</TableCell>
-                            <TableCell align="right">Rank</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell colSpan={5} align="center">
-                                    <CircularProgress />
-                                </TableCell>
-                            </TableRow>
-                        ) : gachaData.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={5} align="center">
-                                    No data to display (try importing your gacha data first)
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            gachaData.map((row: GachaItem) => (
-                                <TableRow
-                                    key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-
-                                >
-                                    <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
-                                        {row.id}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
-                                        {row.time}
-                                    </TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.name}</TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.item_type}</TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.rank}</TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+        <div
+            className="h-full"
+        >
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                initialState={{
+                    pagination: {
+                        paginationModel: { page: 0, pageSize: 10 },
+                    },
+                }}
+                pageSizeOptions={[5, 10, 25, 50, 100]}
+                loading={isLoading}
+                className='bg-gray-100'
+                disableRowSelectionOnClick={true}
+                disableColumnMenu={true}
+                slots={{
+                    noRowsOverlay: NoRowsOverlay,
+                    loadingOverlay: LinearProgress
+                }}
+                autoHeight={true}
+            />
         </div >
     </>);
 

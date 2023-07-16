@@ -1,9 +1,9 @@
 import React from 'react'
 
 function avatar_link(_name: string) {
-    // Converts spaces to underscores
-    console.log("Converting avatar_link " + _name)
+    // Converts spaces to underscores and lowercases
     let parsed_name: string = _name.replaceAll(' ', '_');
+    parsed_name = parsed_name.toLowerCase();
 
     // Get link to character icon in public/avatar_icons folder
     const link: string = "/avatar_icons/" + parsed_name + ".png";
