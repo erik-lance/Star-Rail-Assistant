@@ -28,7 +28,7 @@ function Write-ErrorAndExit {
     exit
 }
 
-# This fucntion finds the game path by searching for "Loading player data from" in the log.
+# This function finds the game path by searching for "Loading player data from" in the log.
 function Find-GamePath {
     param(
         [Parameter(Mandatory=$true)]
@@ -66,8 +66,6 @@ if (-not (Test-Path $log_path))
     Write-ErrorAndExit "Log File (Player.log): $log_path"
 }
 
-$log_content = Get-Content $log_path
-
 # Find game path by searching for "Loading player data from" in the log
 # This contains the path to the game's data folder.
 $game_path = Find-GamePath -LogPath $log_path
@@ -102,7 +100,6 @@ for ($i = $cache_lines.Length-1; $i -ge 0; $i--)
     if ($line.StartsWith('http') -and $line.Contains("getGachaLog")) 
     {
         Write-Host "Found Wish History URL!" -ForegroundColor Green
-        # Write-Output "URL: $line `n`n" # Uncomment this line to get FULL url
 
         # Split the line by \0 to get the url
         $url = ($line -split "\0")[0]
@@ -124,12 +121,7 @@ for ($i = $cache_lines.Length-1; $i -ge 0; $i--)
         }
         else
         {
-            Write-ErrorAndExit "Wish History URL + $url"
+            Write-ErrorAndExit "Invalid Wish History. What was found: + $url"
         }
     }
-}
-
-if ($foundURL -eq "False") 
-{
-    Write-ErrorAndExit "Wish History URL"
 }
