@@ -6,10 +6,10 @@
 // Import material ui table
 import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { GachaItem } from '@/utils/gacha-details';
-import { StandardCharacters, StandardLightCones } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
-import ranks from '@/styles/ranks.module.css'
 import Sticker from '@/components/Sticker';
+
+import { get_rolls_since_last_x, get_rolls_until_soft_pity, get_rolls_until_hard_pity, get_is_guaranteed_five_star } from '@/utils/rolls-calculator';
 
 export default function History() {
     // Retrieve the gacha data from local storage
@@ -32,71 +32,6 @@ export default function History() {
         fetchGachaData();
     }, []);
 
-    function get_rolls_since_last_x(star: number): number{
-        // Returns the number of rolls since the last 4* item
-        let rolls_since_last_x: number = 0;
-        for (let i = 0; i < gachaData.length; i++) {
-            if (gachaData[i].rank === star.toString()) {
-                return rolls_since_last_x;
-            } else {
-                rolls_since_last_x++;
-            }
-        }
-        return rolls_since_last_x;
-    }
-
-    function get_rolls_until_soft_pity(){
-        // Returns the number of rolls until soft pity
-        const rolls_since_last_five_star:number = get_rolls_since_last_x(5);
-        const soft_pity:number = 75;
-
-        if (rolls_since_last_five_star >= soft_pity){
-            return 0;
-        } else {
-            return soft_pity - rolls_since_last_five_star;
-        }
-    }
-
-    function get_rolls_until_hard_pity(){
-        // Returns the number of rolls until hard pity
-        const rolls_since_last_five_star:number = get_rolls_since_last_x(5);
-        const hard_pity:number = 90;
-
-        return hard_pity - rolls_since_last_five_star;
-    }
-
-    function get_is_guaranteed_five_star(){
-        // Find the last 5* item
-        const nullGacha = {
-            id: "",
-            time: "",
-            name: "",
-            item_type: "",
-            rank: "",
-        }        
-
-        let last_five_star:GachaItem = nullGacha;
-
-        for (let i = gachaData.length - 1; i >= 0; i--) {
-            if (gachaData[i].rank === "5") {
-                last_five_star = gachaData[i];
-                break;
-            }
-        }
-
-        if (last_five_star === nullGacha){
-            return "No";
-        } else {
-            // Check if last 5* item was from StandardCharacters or StandardLightCones
-            const values_characters = Object.values(StandardCharacters);
-            const values_light_cones = Object.values(StandardLightCones);
-            if (values_characters.includes(last_five_star.name) || values_light_cones.includes(last_five_star.name)){
-                return "Yes";
-            } else {
-                return "No";
-            }
-        }
-    }
 
 
     return (<>
@@ -119,13 +54,13 @@ export default function History() {
                         <>
                             <div>
                                 <div>Number of Warps: {gachaData.length}</div>
-                                <div>Rolls since last <span className={ranks[`rank-4`]}>4*</span>: {get_rolls_since_last_x(4)}</div>
-                                <div>Rolls since last <span className={ranks[`rank-5`]}>5*</span>: {get_rolls_since_last_x(5)}</div>
+                                <div>Rolls since last <span className={`rank-4`}>4*</span>: {get_rolls_since_last_x(4, gachaData)}</div>
+                                <div>Rolls since last <span className={`rank-5`}>5*</span>: {get_rolls_since_last_x(5, gachaData)}</div>
                             </div>
                             <div>
-                                <div>Rolls until soft pity: {get_rolls_until_soft_pity()}</div>
-                                <div>Rolls until hard pity: {get_rolls_until_hard_pity()}</div>
-                                <div>Guaranteed Promo <span className={ranks[`rank-5`]}>5*</span>?: {get_is_guaranteed_five_star()}</div>
+                                <div>Rolls until soft pity: {get_rolls_until_soft_pity(gachaData)}</div>
+                                <div>Rolls until hard pity: {get_rolls_until_hard_pity(gachaData)}</div>
+                                <div>Guaranteed Promo <span className={`rank-5`}>5*</span>?: {get_is_guaranteed_five_star(gachaData)}</div>
                             </div>
                         </>
                     )}
@@ -170,15 +105,15 @@ export default function History() {
                                     key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
 
                                 >
-                                    <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
+                                    <TableCell component="th" scope="row" className={`rank-${row.rank}`}>
                                         {row.id}
                                     </TableCell>
-                                    <TableCell component="th" scope="row" className={ranks[`rank-${row.rank}`]}>
+                                    <TableCell component="th" scope="row" className={`rank-${row.rank}`}>
                                         {row.time}
                                     </TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.name}</TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.item_type}</TableCell>
-                                    <TableCell align="right" className={ranks[`rank-${row.rank}`]}>{row.rank}</TableCell>
+                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.name}</TableCell>
+                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.item_type}</TableCell>
+                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.rank}</TableCell>
                                 </TableRow>
                             ))
                         )}
