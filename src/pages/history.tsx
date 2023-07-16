@@ -5,10 +5,11 @@
 
 // Import material ui table
 import { CircularProgress } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridCellParams } from '@mui/x-data-grid';
 import { GachaItem } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
 import Sticker from '@/components/Sticker';
+import Avatar from '@/components/Avatar'
 
 import { get_rolls_since_last_x, get_rolls_until_soft_pity, get_rolls_until_hard_pity, get_is_guaranteed_five_star } from '@/utils/rolls-calculator';
 
@@ -21,7 +22,20 @@ export default function History() {
 
     const columns: GridColDef[] = [
         { field: 'time', headerName: 'Time', width: 200 },
-        { field: 'name', headerName: 'Name', width: 200 },
+        { 
+            field: 'name', headerName: 'Name', width: 300,
+            renderCell(params) {
+                const item = params.row as GachaItem;
+                if (item.item_type === "Character") {
+                    return <>
+                        <Avatar name={item.name} /> 
+                        <span className="ml-2">{item.name}</span>
+                    </>
+                }
+                return params.value;
+            },
+    
+        },
         { field: 'item_type', headerName: 'Item Type', width: 100 },
         { field: 'rank', headerName: 'Rank', width: 10, align: 'center' },
     ]
@@ -101,6 +115,8 @@ export default function History() {
                 pageSizeOptions={[5, 10, 25, 50, 100]}
                 loading={isLoading}
                 className='bg-gray-100'
+                disableRowSelectionOnClick={true}
+                disableColumnMenu={true}
             />
         </div >
     </>);
