@@ -4,7 +4,7 @@
 // { time, name, item_type, rank }
 
 // Import material ui table
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridCellParams } from '@mui/x-data-grid';
 import { GachaItem } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
@@ -122,7 +122,8 @@ export default function History() {
                 disableRowSelectionOnClick={true}
                 disableColumnMenu={true}
                 slots={{
-                    noRowsOverlay: NoRowsOverlay
+                    noRowsOverlay: NoRowsOverlay,
+                    loadingOverlay: LinearProgress
                 }}
                 autoHeight={true}
             />
