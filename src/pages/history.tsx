@@ -4,7 +4,8 @@
 // { time, name, item_type, rank }
 
 // Import material ui table
-import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { GachaItem } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
 import Sticker from '@/components/Sticker';
@@ -16,6 +17,14 @@ export default function History() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [gachaData, setGachaData] = useState([] as GachaItem[]);
+    const [rows, setRows] = useState<any[]>([]);
+
+    const columns: GridColDef[] = [
+        { field: 'time', headerName: 'Time', width: 200 },
+        { field: 'name', headerName: 'Name', width: 200 },
+        { field: 'item_type', headerName: 'Item Type', width: 100 },
+        { field: 'rank', headerName: 'Rank', width: 10 },
+    ]
 
     useEffect(() => {
         // Simulate data fetching delay
@@ -26,6 +35,17 @@ export default function History() {
             const storedGachaData = localStorage.getItem("star_rail_assistant_gacha_data");
             const parsedGachaData = storedGachaData ? JSON.parse(storedGachaData) : [];
             setGachaData(parsedGachaData);
+
+            // Update rows
+            const updatedRows = parsedGachaData.map((item: GachaItem, index: number) => ({
+                id: index,
+                time: item.time,
+                name: item.name,
+                item_type: item.item_type,
+                rank: item.rank,
+            }));
+            setRows(updatedRows);
+
             setIsLoading(false);
         };
 
@@ -70,56 +90,18 @@ export default function History() {
 
         {/* This contains the table of the wish history */}
         <div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Time</TableCell>
-                            <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Item Type</TableCell>
-                            <TableCell align="right">Rank</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell colSpan={5} align="center">
-                                    <CircularProgress />
-                                </TableCell>
-                            </TableRow>
-                        ) : gachaData.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={5} align="center">
-                                    <div
-                                        className="flex flex-col items-center justify-center py-2 gap-5"
-                                    >
-                                    <Sticker name="pom_sad" size={250}/>
-                                    No data to display (try importing your gacha data first)
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            gachaData.map((row: GachaItem) => (
-                                <TableRow
-                                    key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-
-                                >
-                                    <TableCell component="th" scope="row" className={`rank-${row.rank}`}>
-                                        {row.id}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row" className={`rank-${row.rank}`}>
-                                        {row.time}
-                                    </TableCell>
-                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.name}</TableCell>
-                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.item_type}</TableCell>
-                                    <TableCell align="right" className={`rank-${row.rank}`}>{row.rank}</TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                initialState={{
+                    pagination: {
+                        paginationModel: { page: 0, pageSize: 10 },
+                    },
+                }}
+                pageSizeOptions={[5, 10, 25, 50, 100]}
+                loading={isLoading}
+                className='bg-gray-100'
+            />
         </div >
     </>);
 
