@@ -90,7 +90,7 @@ export default function History() {
                     <p>No data</p>
                 ) : (
                     <>
-                        <h1>Warp Stats</h1>
+                        <h1 className="text-3xl font-bold">Warp Stats</h1>
                         <div
                             className="flex flex-row items-center justify-center py-2 gap-5"
                         >
