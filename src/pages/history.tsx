@@ -8,10 +8,11 @@ import { CircularProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridCellParams } from '@mui/x-data-grid';
 import { GachaItem } from '@/utils/gacha-details';
 import { useEffect, useState } from 'react';
-import Sticker from '@/components/Sticker';
 import Avatar from '@/components/Avatar'
 
 import { get_rolls_since_last_x, get_rolls_until_soft_pity, get_rolls_until_hard_pity, get_is_guaranteed_five_star } from '@/utils/rolls-calculator';
+
+import NoRowsOverlay from '@/components/NoRowsOverlay';
 
 export default function History() {
     // Retrieve the gacha data from local storage
@@ -48,6 +49,7 @@ export default function History() {
             // Replace this with your actual data retrieval logic
             const storedGachaData = localStorage.getItem("star_rail_assistant_gacha_data");
             const parsedGachaData = storedGachaData ? JSON.parse(storedGachaData) : [];
+
             setGachaData(parsedGachaData);
 
             // Update rows
@@ -103,7 +105,9 @@ export default function History() {
         </div >
 
         {/* This contains the table of the wish history */}
-        <div>
+        <div
+            className="h-full"
+        >
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -117,6 +121,10 @@ export default function History() {
                 className='bg-gray-100'
                 disableRowSelectionOnClick={true}
                 disableColumnMenu={true}
+                slots={{
+                    noRowsOverlay: NoRowsOverlay
+                }}
+                autoHeight={true}
             />
         </div >
     </>);
