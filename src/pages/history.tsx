@@ -23,7 +23,7 @@ export default function History() {
         { field: 'time', headerName: 'Time', width: 200 },
         { field: 'name', headerName: 'Name', width: 200 },
         { field: 'item_type', headerName: 'Item Type', width: 100 },
-        { field: 'rank', headerName: 'Rank', width: 10 },
+        { field: 'rank', headerName: 'Rank', width: 10, align: 'center' },
     ]
 
     useEffect(() => {
