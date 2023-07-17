@@ -13,7 +13,7 @@ export default function Home() {
 				main: '#242027',
 			},
 			secondary: {
-				main: '#3D253B',
+				main: '#92244F',
 			},
 		}
 	})
@@ -27,7 +27,9 @@ export default function Home() {
 			>
 
 				<Sticker name="march_thumb" size={200} />
-				<Stack>
+				<Stack
+					spacing={1}
+				>
 					<p className="text-6xl font-bold">Welcome to Star Rail Assistant!</p>
 					<p className="text-2xl font-thin">A website to help track your warp rolls and view profiles</p>
 					<ThemeProvider theme={theme}>
