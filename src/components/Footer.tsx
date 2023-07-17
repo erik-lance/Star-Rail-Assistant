@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <div className='w-full flex flex-row justify-between items-center p-4'>
             <div>
-                
+            <p>© All rights reserved by HoYoverse</p>
             </div>
             <div className='flex flex-row space-x-4'>
                 <a href='https://github.com/erik-lance/Star-Rail-Assistant' target='_blank'>
