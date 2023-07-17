@@ -3,6 +3,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Sticker from '@/components/Sticker'
 import { Chip, Divider, Stack, ThemeProvider, createTheme } from '@mui/material'
+import { FaHistory, FaFileImport } from 'react-icons/fa'
+import { BsPersonFill } from 'react-icons/bs'
 
 export default function Home() {
 	const theme = createTheme({
@@ -40,6 +42,8 @@ export default function Home() {
 								href="/history"
 								clickable 
 								color="secondary"
+								icon={<FaHistory />}
+								sx={{paddingLeft: 1}}
 							/>
 
 							<Chip
@@ -48,6 +52,8 @@ export default function Home() {
 								href="/import"
 								clickable
 								color="secondary"
+								icon={<FaFileImport />}
+								sx={{paddingLeft: 1}}
 							/>
 
 							<Chip
@@ -56,6 +62,8 @@ export default function Home() {
 								href="/player"
 								clickable
 								color="secondary"
+								icon={<BsPersonFill />}
+								sx={{paddingLeft: 1}}
 							/>
 
 						</Stack>
