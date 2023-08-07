@@ -73,6 +73,13 @@ export default function Home() {
 				</Stack>
 			</div>
 
+			<div
+				className="mt-10 text-xs"
+			>
+				This site is a <span className="text-blue font-semibold">🚧 work in-progress.</span> If you have any suggestions or feedback, 
+				please contact me on Discord at <span className="text-beige">ransupi</span>
+				&nbsp;or submit an issue on <a href='https://github.com/erik-lance/Star-Rail-Assistant' target='_blank' className="text-beige">GitHub.</a>
+			</div>
 
 		</div>
 		<Footer />
