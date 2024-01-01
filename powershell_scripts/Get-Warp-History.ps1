@@ -76,16 +76,39 @@ if ([string]::IsNullOrEmpty($game_path))
     Write-ErrorAndExit "Game Path"
 }
 
+$cache_path = "$game_path/webCaches"
+
+$folder_version = [Version]::MinValue  # Initialize with the lowest possible version
+
+# Loop through each folder in the webCaches folder
+foreach ($folder in (Get-ChildItem -Path $cache_path -Directory)) 
+{
+    # Check if the folder name is a valid version number
+    if ([Version]::TryParse($folder.Name, [ref]$null)) 
+    {
+        # If the current folder version is greater than the previous highest version
+        if ($folder.Version -gt $folder_version) 
+        {
+            $folder_version = $folder.Version
+        }
+    }
+}
+
+# Now $folder_version contains the highest version
+Write-Output "Highest version folder: $folder_version"
+
+$data_path = "$cache_path/$folder_version/Cache/Cache_Data"
+
 # ----- Find URL of wish history -----
 Write-Output "Finding Wish History..."
 
 # Copy data_2 file to a new file so we can read it
 # data_2 is the file that contains the wish history url
-Copy-Item -Path "$game_path/webCaches/Cache/Cache_Data/data_2" -Destination "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
+Copy-Item -Path "$data_path/data_2" -Destination "$data_path/data_2_temp"
 
 # Read the data_2 file in UTF8 format and remove the copied file
-$cache_data = Get-Content -Encoding UTF8 -Raw "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
-Remove-Item -Path "$game_path/webCaches/Cache/Cache_Data/data_2_temp"
+$cache_data = Get-Content -Encoding UTF8 -Raw "$data_path/data_2_temp"
+Remove-Item -Path "$data_path/data_2_temp"
 
 # Split the data_2 file by 1/0/ to get each line
 $cache_lines = $cache_data -split '1/0/'
