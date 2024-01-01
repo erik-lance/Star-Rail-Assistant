@@ -89,9 +89,9 @@ foreach ($folder in (Get-ChildItem -Path $cache_path -Directory))
     if ([Version]::TryParse($folder.Name, [ref]$null)) 
     {
         # If the current folder version is greater than the previous highest version
-        if ($folder.Version -gt $folder_version) 
+        if ([Version]$folder.Name -gt $folder_version) 
         {
-            $folder_version = $folder.Version
+            $folder_version = [Version]$folder.Name
         }
     }
 }
