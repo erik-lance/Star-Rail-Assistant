@@ -76,6 +76,8 @@ if ([string]::IsNullOrEmpty($game_path))
     Write-ErrorAndExit "Game Path"
 }
 
+# Find the highest version folder in the webCaches folder
+Write-Output "Finding Highest Version Folder..."
 $cache_path = "$game_path/webCaches"
 
 $folder_version = [Version]::MinValue  # Initialize with the lowest possible version
